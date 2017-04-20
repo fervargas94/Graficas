@@ -179,7 +179,7 @@ scene.add(im2);
 
 var mona = createBox(0, 0, -989, 220, 240, 1, 0, "images/mona.png");
 scene.add(mona);
-
+									//w   /h
 //Imagenes del lado de la pared
 var remb = createBox(-500, 0, 989, 320, 240, 1, 0, "images/last.png");
 scene.add(remb);
@@ -246,14 +246,63 @@ var theTime = new Date().getTime();
 	  if(controls.TURN_RIGHT) {
 		camera.rotation.y -= 0.042 * deltaTime;
 	  }
-	  
+
+	  //console.log(camera.position)
+
 	  if(camera.position.x > 1000 - wallDistance || camera.position.x < -1000 + wallDistance) {
 		camera.position.x = prevCamPos.x;
+		if(camera.position.x >= -550 && camera.position.x <= -330){ //&& camera.position.z >= -598 && camera.position.z <= -560){
+			if(camera.position.z <= -590){
+				console.log("Original")
+			}else if(camera.position.z >= 590){
+	  			console.log("Cena")
+	  		}
+	  		
+	  	}
+	  	if(camera.position.x >= 380 && camera.position.x <= 580){ // && camera.position.z >= -598 && camera.position.z <= -560){
+	  		if(camera.position.z <= -590){
+	  			console.log("Birth")
+	  		}else if(camera.position.z >= 590){
+	  			console.log("Cielo")
+	  		}
+	  	}
+	  	if(camera.position.x >= -125 && camera.position.x <= 120){ // && camera.position.z >= -598 && camera.position.z <= -560){
+	  		if(camera.position.z <= -590){
+	  			console.log("Mona")
+	  		}else if(camera.position.z >= 590){
+	  			console.log("Tipa")
+	  		}
+	  	}
+
 	  }
 	  if(camera.position.z > 1000 - wallDistance || camera.position.z < -1000 + wallDistance) {
 		camera.position.z = prevCamPos.z;
+		//function(x, y, z, w, h, d, r, url, rx, ry, matConf) -500 320
+	  	if(camera.position.x >= -550 && camera.position.x <= -330){ // && camera.position.z >= -598 && camera.position.z <= -560){
+	  		if(camera.position.z <= -590){
+	  			console.log("Original")
+	  		}else if(camera.position.z >= 590){
+	  			console.log("Cena")
+	  		}
+	  	}
+	  	if(camera.position.x >= 380 && camera.position.x <= 580){ // && camera.position.z >= -598 && camera.position.z <= -560){
+	  		if(camera.position.z <= -590){
+	  			console.log("Birth")
+	  		}else if(camera.position.z >= 590){
+	  			console.log("Cielo")
+	  		}
+	  	}
+	  	if(camera.position.x >= -125 && camera.position.x <= 120){ // && camera.position.z >= -598 && camera.position.z <= -560){
+	  		if(camera.position.z <= -590){
+	  			console.log("Mona")
+	  		}else if(camera.position.z >= 590){
+	  			console.log("Tipa")
+	  		}
+	  	}
+
 	  }
 
+	  
 	  
 	  renderer.render(scene, camera);
 		if(stats) {
