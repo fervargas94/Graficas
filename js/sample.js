@@ -8,8 +8,23 @@ window.requestAnimFrame = (function(){
           };
 })();
 var container = document.getElementById("container");
-
+var audio = document.createElement('audio');
+var source = document.createElement('source');
 var t = THREE;
+var globalAudio = "";
+
+var playInfo = function(name){
+	conso
+	if (globalAudio != name){
+		audio.pause();
+		globalAudio = name;
+		audio.currentTime = 0;
+		console.log(audio.paused);
+		source.src = 'sounds/' + name + '.mp3';
+		audio.appendChild(source);
+		audio.play();
+	}	
+}
 
 var stats;
 
@@ -171,26 +186,48 @@ var ceiling = createBox(0, 200, 0, 2000, 10, 2000, 0, "images/pastel.jpg", 5, 5)
 scene.add(ceiling);
 
 //Imagenes principales
-var remb = createBox(-500, 0, -989, 320, 240, 1, 0, "remb.png");
+var remb = createBox(-500, 0, -989, 320, 240, 1, 0, "images/remb.png");
 scene.add(remb);
+
+var TextRemb = createBox(-500, -140, -989, 100, 20, 1, 0, "images/rembText.png");
+scene.add(TextRemb);
+TextRemb.visible = false;
 
 var im2 = createBox(500, 0, -989, 320, 240, 1, 0, "images/birth.jpg");
 scene.add(im2);
 
+var TextBirth = createBox(500, -140, -989, 100, 20, 1, 0, "images/birthText.png");
+scene.add(TextBirth);
+TextBirth.visible = false;
+
 var mona = createBox(0, 0, -989, 220, 240, 1, 0, "images/mona.png");
 scene.add(mona);
 									//w   /h
+var Textmona = createBox(0, -140, -989, 100, 20, 1, 0, "images/monaText.png");
+scene.add(Textmona);
+Textmona.visible = false;
+
 //Imagenes del lado de la pared
 var remb = createBox(-500, 0, 989, 320, 240, 1, 0, "images/last.png");
 scene.add(remb);
 
+var TextCena = createBox(-500, -140, 989, 110, 30, 1, 0, "images/cenaText.png");
+scene.add(TextCena);
+TextCena.visible = false;
+
 var im2 = createBox(500, 0, 989, 320, 240, 1, 0, "images/night.png");
 scene.add(im2);
+
+var TextNight = createBox(500, -140, 989, 110, 30, 1, 0, "images/nightText.png");
+scene.add(TextNight);
+TextNight.visible = false;
 
 var chica = createBox(0, 0, 989, 200, 240, 1, 0, "images/chica.jpg");
 scene.add(chica);
 
-
+var TextChica = createBox(0, -140, 989, 110, 30, 1, 0, "images/chicaText.png");
+scene.add(TextChica);
+TextChica.visible = false;
 
 var door = createBox(-840, -38, 989, 160, 320, 5, 0, "door.png");
 scene.add(door);
@@ -254,23 +291,59 @@ var theTime = new Date().getTime();
 		if(camera.position.x >= -550 && camera.position.x <= -330){ //&& camera.position.z >= -598 && camera.position.z <= -560){
 			if(camera.position.z <= -590){
 				console.log("Original")
+				TextRemb.visible = true;
+				TextNight.visible = false;
+				TextBirth.visible = false;
+				Textmona.visible = false;
+				TextCena.visible = false;
+				TextChica.visible = false;
 			}else if(camera.position.z >= 590){
 	  			console.log("Cena")
+	  			TextRemb.visible = false;
+	  			Textmona.visible = false;
+	  			TextBirth.visible = false;
+	  			TextCena.visible = true;
+	  			TextChica.visible = false;
+	  			TextNight.visible = false;
 	  		}
 	  		
 	  	}
 	  	if(camera.position.x >= 380 && camera.position.x <= 580){ // && camera.position.z >= -598 && camera.position.z <= -560){
 	  		if(camera.position.z <= -590){
 	  			console.log("Birth")
+	  			TextRemb.visible = false;
+	  			TextNight.visible = false;
+	  			Textmona.visible = false;
+	  			TextChica.visible = false;
+	  			TextBirth.visible = true;
+	  			TextCena.visible = false;
 	  		}else if(camera.position.z >= 590){
 	  			console.log("Cielo")
+	  			TextRemb.visible = false;
+	  			Textmona.visible = false;
+	  			TextBirth.visible = false;
+	  			TextChica.visible = false;
+	  			TextCena.visible = false;
+	  			TextNight.visible = true;
 	  		}
 	  	}
 	  	if(camera.position.x >= -125 && camera.position.x <= 120){ // && camera.position.z >= -598 && camera.position.z <= -560){
 	  		if(camera.position.z <= -590){
 	  			console.log("Mona")
+	  			TextRemb.visible = false;
+	  			Textmona.visible = true;
+	  			TextNight.visible = false;
+	  			TextChica.visible = false;
+	  			TextCena.visible = false;
+	  			TextBirth.visible = false;
 	  		}else if(camera.position.z >= 590){
 	  			console.log("Tipa")
+	  			TextRemb.visible = false;
+	  			Textmona.visible = false;
+	  			TextCena.visible = false;
+	  			TextBirth.visible = false;
+	  			TextNight.visible = false;
+	  			TextChica.visible = true;
 	  		}
 	  	}
 
@@ -281,22 +354,58 @@ var theTime = new Date().getTime();
 	  	if(camera.position.x >= -550 && camera.position.x <= -330){ // && camera.position.z >= -598 && camera.position.z <= -560){
 	  		if(camera.position.z <= -590){
 	  			console.log("Original")
+	  			TextRemb.visible = true;
+	  			Textmona.visible = false;
+	  			TextChica.visible = false;
+	  			TextCena.visible = false;
+	  			TextNight.visible = false;
+	  			TextBirth.visible = false;
 	  		}else if(camera.position.z >= 590){
 	  			console.log("Cena")
+	  			TextRemb.visible = false;
+	  			Textmona.visible = false;
+	  			TextNight.visible = false;
+	  			TextCena.visible = true;
+	  			TextChica.visible = false;
+	  			TextBirth.visible = false;
 	  		}
 	  	}
 	  	if(camera.position.x >= 380 && camera.position.x <= 580){ // && camera.position.z >= -598 && camera.position.z <= -560){
 	  		if(camera.position.z <= -590){
 	  			console.log("Birth")
+	  			TextRemb.visible = false;
+	  			TextCena.visible = false;
+	  			TextChica.visible = false;
+	  			TextNight.visible = false;
+	  			Textmona.visible = false;
+	  			TextBirth.visible = true;
 	  		}else if(camera.position.z >= 590){
 	  			console.log("Cielo")
+	  			TextRemb.visible = false;
+	  			Textmona.visible = false;
+	  			TextCena.visible = false;
+	  			TextChica.visible = false;
+	  			TextNight.visible = true;
+	  			TextBirth.visible = false;
 	  		}
 	  	}
 	  	if(camera.position.x >= -125 && camera.position.x <= 120){ // && camera.position.z >= -598 && camera.position.z <= -560){
 	  		if(camera.position.z <= -590){
 	  			console.log("Mona")
+	  			Textmona.visible = true;
+	  			TextCena.visible = false;
+	  			TextRemb.visible = false;
+	  			TextChica.visible = false;
+	  			TextNight.visible = false;
+	  			TextBirth.visible = false;
 	  		}else if(camera.position.z >= 590){
 	  			console.log("Tipa")
+	  			Textmona.visible = false;
+	  			TextRemb.visible = false;
+	  			TextCena.visible = false;
+	  			TextChica.visible = true;
+	  			TextNight.visible = false;
+	  			TextBirth.visible = false;
 	  		}
 	  	}
 
@@ -341,6 +450,8 @@ var changeCallback = function(e){
 document.addEventListener('pointerlockchange', changeCallback, false);
 document.addEventListener('mozpointerlockchange', changeCallback, false);
 document.addEventListener('webkitpointerlockchange', changeCallback, false);
+
+
 
 // Hook mouse move events
 document.addEventListener("mousemove", function(e){
