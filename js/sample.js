@@ -246,179 +246,232 @@ var getDeltaStep = function(step, rotation){
 };
 
 var theTime = new Date().getTime();
+var toggle_cctv = false;
+var current_position = {
+		                    x: 0,
+		                    y: 0,
+		                    z: 0,
+		        		};
+
 (function animloop(){
 	  requestAnimFrame(animloop);
 		var time = new Date().getTime();
 		var deltaTime = (time - theTime) / (1000 / 60);
 	    theTime = time;
-	  
+	  	
 		var prevCamPos = {
 			x: camera.position.x,
 			z: camera.position.z
 		};
-		
-	  if(controls.FORWARD) {
-		var delta = getDeltaStep(moveStep, camera.rotation.y);
-		camera.position.x -= delta.x * deltaTime;
-		camera.position.z -= delta.z * deltaTime;
-	  }
-	  if(controls.BACKWARD) {
-		var delta = getDeltaStep(moveStep, camera.rotation.y);
-		camera.position.x += delta.x * deltaTime;
-		camera.position.z += delta.z * deltaTime;
-	  }
-	  if(controls.LEFT) {
-		var delta = getDeltaStep(moveStep, camera.rotation.y - Math.PI / 2);
-		camera.position.x += delta.x * deltaTime;
-		camera.position.z += delta.z * deltaTime;
-	  }
-	  if(controls.RIGHT) {
-		var delta = getDeltaStep(moveStep, camera.rotation.y + Math.PI / 2);
-		camera.position.x += delta.x * deltaTime;
-		camera.position.z += delta.z * deltaTime;
-	  }
-	  if(controls.TURN_LEFT) {
-		camera.rotation.y += 0.042 * deltaTime;
-	  }
-	  if(controls.TURN_RIGHT) {
-		camera.rotation.y -= 0.042 * deltaTime;
-	  }
+		if (controls.P_KEY){
+			console.log(camera.position);
+			console.log("Rotation: " + camera.rotation.y);
+		}
+		if (controls.C_KEY){
+			console.log("Toggle cctv");
+			console.log(toggle_cctv);
+            if (toggle_cctv === false){
+                current_position.x = camera.position.x;
+                current_position.y = camera.rotation.y;
+                current_position.z = camera.position.z;
+                toggle_cctv = true;
+                console.log("starting cctv");
+                startCctv();
+            }
+            else{
+                toggle_cctv = false;
+                console.log("reseting camera");
+                resetCamera(current_position);
+            }
+		}
+		if (toggle_cctv === false){
+			if(controls.FORWARD) {
+				var delta = getDeltaStep(moveStep, camera.rotation.y);
+				camera.position.x -= delta.x * deltaTime;
+				camera.position.z -= delta.z * deltaTime;
+			}
+			if(controls.BACKWARD) {
+				var delta = getDeltaStep(moveStep, camera.rotation.y);
+				camera.position.x += delta.x * deltaTime;
+				camera.position.z += delta.z * deltaTime;
+			}
+			if(controls.LEFT) {
+				var delta = getDeltaStep(moveStep, camera.rotation.y - Math.PI / 2);
+				camera.position.x += delta.x * deltaTime;
+				camera.position.z += delta.z * deltaTime;
+			}
+			if(controls.RIGHT) {
+				var delta = getDeltaStep(moveStep, camera.rotation.y + Math.PI / 2);
+				camera.position.x += delta.x * deltaTime;
+				camera.position.z += delta.z * deltaTime;
+			}
+			if(controls.TURN_LEFT) {
+				camera.rotation.y += 0.042 * deltaTime;
+			}
+			if(controls.TURN_RIGHT) {
+				camera.rotation.y -= 0.042 * deltaTime;
+			}
 
-	  //console.log(camera.position)
+		  if(camera.position.x > 1000 - wallDistance || camera.position.x < -1000 + wallDistance) {
+			camera.position.x = prevCamPos.x;
+			if(camera.position.x >= -550 && camera.position.x <= -330){ //&& camera.position.z >= -598 && camera.position.z <= -560){
+				if(camera.position.z <= -590){
+					console.log("Original")
+					TextRemb.visible = true;
+					TextNight.visible = false;
+					TextBirth.visible = false;
+					Textmona.visible = false;
+					TextCena.visible = false;
+					TextChica.visible = false;
+				}else if(camera.position.z >= 590){
+		  			console.log("Cena")
+		  			TextRemb.visible = false;
+		  			Textmona.visible = false;
+		  			TextBirth.visible = false;
+		  			TextCena.visible = true;
+		  			TextChica.visible = false;
+		  			TextNight.visible = false;
+		  		}
+		  		
+		  	}
+		  	if(camera.position.x >= 380 && camera.position.x <= 580){ // && camera.position.z >= -598 && camera.position.z <= -560){
+		  		if(camera.position.z <= -590){
+		  			console.log("Birth")
+		  			TextRemb.visible = false;
+		  			TextNight.visible = false;
+		  			Textmona.visible = false;
+		  			TextChica.visible = false;
+		  			TextBirth.visible = true;
+		  			TextCena.visible = false;
+		  		}else if(camera.position.z >= 590){
+		  			console.log("Cielo")
+		  			TextRemb.visible = false;
+		  			Textmona.visible = false;
+		  			TextBirth.visible = false;
+		  			TextChica.visible = false;
+		  			TextCena.visible = false;
+		  			TextNight.visible = true;
+		  		}
+		  	}
+		  	if(camera.position.x >= -125 && camera.position.x <= 120){ // && camera.position.z >= -598 && camera.position.z <= -560){
+		  		if(camera.position.z <= -590){
+		  			console.log("Mona")
+		  			TextRemb.visible = false;
+		  			Textmona.visible = true;
+		  			TextNight.visible = false;
+		  			TextChica.visible = false;
+		  			TextCena.visible = false;
+		  			TextBirth.visible = false;
+		  		}else if(camera.position.z >= 590){
+		  			console.log("Tipa")
+		  			TextRemb.visible = false;
+		  			Textmona.visible = false;
+		  			TextCena.visible = false;
+		  			TextBirth.visible = false;
+		  			TextNight.visible = false;
+		  			TextChica.visible = true;
+		  		}
+		  	}
 
-	  if(camera.position.x > 1000 - wallDistance || camera.position.x < -1000 + wallDistance) {
-		camera.position.x = prevCamPos.x;
-		if(camera.position.x >= -550 && camera.position.x <= -330){ //&& camera.position.z >= -598 && camera.position.z <= -560){
-			if(camera.position.z <= -590){
-				console.log("Original")
-				TextRemb.visible = true;
-				TextNight.visible = false;
-				TextBirth.visible = false;
-				Textmona.visible = false;
-				TextCena.visible = false;
-				TextChica.visible = false;
-			}else if(camera.position.z >= 590){
-	  			console.log("Cena")
-	  			TextRemb.visible = false;
-	  			Textmona.visible = false;
-	  			TextBirth.visible = false;
-	  			TextCena.visible = true;
-	  			TextChica.visible = false;
-	  			TextNight.visible = false;
-	  		}
-	  		
-	  	}
-	  	if(camera.position.x >= 380 && camera.position.x <= 580){ // && camera.position.z >= -598 && camera.position.z <= -560){
-	  		if(camera.position.z <= -590){
-	  			console.log("Birth")
-	  			TextRemb.visible = false;
-	  			TextNight.visible = false;
-	  			Textmona.visible = false;
-	  			TextChica.visible = false;
-	  			TextBirth.visible = true;
-	  			TextCena.visible = false;
-	  		}else if(camera.position.z >= 590){
-	  			console.log("Cielo")
-	  			TextRemb.visible = false;
-	  			Textmona.visible = false;
-	  			TextBirth.visible = false;
-	  			TextChica.visible = false;
-	  			TextCena.visible = false;
-	  			TextNight.visible = true;
-	  		}
-	  	}
-	  	if(camera.position.x >= -125 && camera.position.x <= 120){ // && camera.position.z >= -598 && camera.position.z <= -560){
-	  		if(camera.position.z <= -590){
-	  			console.log("Mona")
-	  			TextRemb.visible = false;
-	  			Textmona.visible = true;
-	  			TextNight.visible = false;
-	  			TextChica.visible = false;
-	  			TextCena.visible = false;
-	  			TextBirth.visible = false;
-	  		}else if(camera.position.z >= 590){
-	  			console.log("Tipa")
-	  			TextRemb.visible = false;
-	  			Textmona.visible = false;
-	  			TextCena.visible = false;
-	  			TextBirth.visible = false;
-	  			TextNight.visible = false;
-	  			TextChica.visible = true;
-	  		}
-	  	}
-
-	  }
-	  if(camera.position.z > 1000 - wallDistance || camera.position.z < -1000 + wallDistance) {
-		camera.position.z = prevCamPos.z;
-		//function(x, y, z, w, h, d, r, url, rx, ry, matConf) -500 320
-	  	if(camera.position.x >= -550 && camera.position.x <= -330){ // && camera.position.z >= -598 && camera.position.z <= -560){
-	  		if(camera.position.z <= -590){
-	  			console.log("Original")
-	  			TextRemb.visible = true;
-	  			Textmona.visible = false;
-	  			TextChica.visible = false;
-	  			TextCena.visible = false;
-	  			TextNight.visible = false;
-	  			TextBirth.visible = false;
-	  		}else if(camera.position.z >= 590){
-	  			console.log("Cena")
-	  			TextRemb.visible = false;
-	  			Textmona.visible = false;
-	  			TextNight.visible = false;
-	  			TextCena.visible = true;
-	  			TextChica.visible = false;
-	  			TextBirth.visible = false;
-	  		}
-	  	}
-	  	if(camera.position.x >= 380 && camera.position.x <= 580){ // && camera.position.z >= -598 && camera.position.z <= -560){
-	  		if(camera.position.z <= -590){
-	  			console.log("Birth")
-	  			TextRemb.visible = false;
-	  			TextCena.visible = false;
-	  			TextChica.visible = false;
-	  			TextNight.visible = false;
-	  			Textmona.visible = false;
-	  			TextBirth.visible = true;
-	  		}else if(camera.position.z >= 590){
-	  			console.log("Cielo")
-	  			TextRemb.visible = false;
-	  			Textmona.visible = false;
-	  			TextCena.visible = false;
-	  			TextChica.visible = false;
-	  			TextNight.visible = true;
-	  			TextBirth.visible = false;
-	  		}
-	  	}
-	  	if(camera.position.x >= -125 && camera.position.x <= 120){ // && camera.position.z >= -598 && camera.position.z <= -560){
-	  		if(camera.position.z <= -590){
-	  			console.log("Mona")
-	  			Textmona.visible = true;
-	  			TextCena.visible = false;
-	  			TextRemb.visible = false;
-	  			TextChica.visible = false;
-	  			TextNight.visible = false;
-	  			TextBirth.visible = false;
-	  		}else if(camera.position.z >= 590){
-	  			console.log("Tipa")
-	  			Textmona.visible = false;
-	  			TextRemb.visible = false;
-	  			TextCena.visible = false;
-	  			TextChica.visible = true;
-	  			TextNight.visible = false;
-	  			TextBirth.visible = false;
-	  		}
-	  	}
-
-	  }
+		  }
+		  if(camera.position.z > 1000 - wallDistance || camera.position.z < -1000 + wallDistance) {
+			camera.position.z = prevCamPos.z;
+			//function(x, y, z, w, h, d, r, url, rx, ry, matConf) -500 320
+		  	if(camera.position.x >= -550 && camera.position.x <= -330){ // && camera.position.z >= -598 && camera.position.z <= -560){
+		  		if(camera.position.z <= -590){
+		  			console.log("Original")
+		  			TextRemb.visible = true;
+		  			Textmona.visible = false;
+		  			TextChica.visible = false;
+		  			TextCena.visible = false;
+		  			TextNight.visible = false;
+		  			TextBirth.visible = false;
+		  		}else if(camera.position.z >= 590){
+		  			console.log("Cena")
+		  			TextRemb.visible = false;
+		  			Textmona.visible = false;
+		  			TextNight.visible = false;
+		  			TextCena.visible = true;
+		  			TextChica.visible = false;
+		  			TextBirth.visible = false;
+		  		}
+		  	}
+		  	if(camera.position.x >= 380 && camera.position.x <= 580){ // && camera.position.z >= -598 && camera.position.z <= -560){
+		  		if(camera.position.z <= -590){
+		  			console.log("Birth")
+		  			TextRemb.visible = false;
+		  			TextCena.visible = false;
+		  			TextChica.visible = false;
+		  			TextNight.visible = false;
+		  			Textmona.visible = false;
+		  			TextBirth.visible = true;
+		  		}else if(camera.position.z >= 590){
+		  			console.log("Cielo")
+		  			TextRemb.visible = false;
+		  			Textmona.visible = false;
+		  			TextCena.visible = false;
+		  			TextChica.visible = false;
+		  			TextNight.visible = true;
+		  			TextBirth.visible = false;
+		  		}
+		  	}
+		  	if(camera.position.x >= -125 && camera.position.x <= 120){ // && camera.position.z >= -598 && camera.position.z <= -560){
+		  		if(camera.position.z <= -590){
+		  			console.log("Mona")
+		  			Textmona.visible = true;
+		  			TextCena.visible = false;
+		  			TextRemb.visible = false;
+		  			TextChica.visible = false;
+		  			TextNight.visible = false;
+		  			TextBirth.visible = false;
+		  		}else if(camera.position.z >= 590){
+		  			console.log("Tipa")
+		  			Textmona.visible = false;
+		  			TextRemb.visible = false;
+		  			TextCena.visible = false;
+		  			TextChica.visible = true;
+		  			TextNight.visible = false;
+		  			TextBirth.visible = false;
+		  		}
+		  	}
+		}
+	}
 
 	  
 	  
-	  renderer.render(scene, camera);
+  	renderer.render(scene, camera);
 		if(stats) {
 			stats.update();
 		}
 })();
 
+function startCctv(){
+    var collides = false;
+    var position = {
+        x: camera.position.x,
+        z: camera.position.z
+    };
+    var rotation = camera.rotation.y;
+    var offset = 50;
+
+    camera.rotation.y = -5.546520000000001;
+    //-1626.0449719765634
+    /*
+	Rotation: -4.578840000000001
+	Rotation: -6.6603600000000025
+    */
+    camera.position.z = 599.4387304038657;
+    // -2576.592456118329
+    camera.position.x = 599.4407111503423;
+    //{ x: 599.4387304038657, y: 0, z: 599.4407111503423 }
+    //Object { x: 583.5301861583231, y: 0, z: 571.7372991168904 }
+}
+
+function resetCamera(position){
+    camera.rotation.y = position.y;
+    camera.position.x = position.x;
+    camera.position.z = position.z;
+}
 
 container.requestPointerLock = container.requestPointerLock ||
 			     container.mozRequestPointerLock ||
