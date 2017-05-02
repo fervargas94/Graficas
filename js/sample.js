@@ -23,7 +23,7 @@ var playInfo = function(name){
 		source.src = 'sounds/' + name + '.mp3';
 		audio.appendChild(source);
 		audio.play();
-	}	
+	}
 }
 
 var stats;
@@ -44,7 +44,7 @@ container.appendChild(loading);
 var hideLoading = function(){
 	loading.style.display = 'none';
 };
-  
+
 // set some camera attributes
 var VIEW_ANGLE = 45,
   ASPECT = WIDTH / HEIGHT,
@@ -130,7 +130,7 @@ var createLamp = function(x, z){
 	light.position.x = x;
 	light.position.y = 130;
 	light.position.z = z;
-	
+
 	light.castShadow = true;
 
 	light.shadowMapWidth = 1024;
@@ -192,7 +192,7 @@ loader.load('exports/pic4.obj', 'exports/pic4.mtl', function( object ) {
   object.position.z = 0;
   object.scale.set(30, 30, 30);
   object.rotation.x += 91.11;
-  object.rotation.z -= 20.5;
+  object.rotation.z -= 20.42;
   scene.add( object );
 });
 
@@ -225,6 +225,18 @@ var Textmona = createBox(0, -140, -989, 100, 20, 1, 0, "images/monaText.png");
 scene.add(Textmona);
 Textmona.visible = false;
 
+// Scream by Edvard Munch
+loader.load('exports/pic2.obj', 'exports/pic2.mtl', function( object ) {
+  object.position.y = -0;
+  object.position.x = 900;
+  object.position.z = 360;
+  object.scale.set(30, 30, 30);
+  object.rotation.x += 91.11;
+  object.rotation.y += 160.2;
+  object.rotation.z -= 20.42;
+  scene.add( object );
+});
+
 //Imagenes del lado de la pared
 var remb = createBox(-500, 0, 989, 320, 240, 1, 0, "images/last.png");
 scene.add(remb);
@@ -250,6 +262,18 @@ TextChica.visible = false;
 var door = createBox(-840, -38, 989, 160, 320, 5, 0, "door.png");
 scene.add(door);
 
+// Van Gohg
+loader.load('exports/pic3.obj', 'exports/pic3.mtl', function( object ) {
+  object.position.y = -0;
+  object.position.x = 900;
+  object.position.z = -360;
+  object.scale.set(30, 30, 30);
+  object.rotation.x += 91.11;
+  object.rotation.y += 160.2;
+  object.rotation.z -= 20.42;
+  scene.add( object );
+});
+
 createLamp(-500, -500);
 createLamp(500, -500);
 createLamp(0, 0);
@@ -269,12 +293,12 @@ var theTime = new Date().getTime();
 		var time = new Date().getTime();
 		var deltaTime = (time - theTime) / (1000 / 60);
 	    theTime = time;
-	  
+
 		var prevCamPos = {
 			x: camera.position.x,
 			z: camera.position.z
 		};
-		
+
 	  if(controls.FORWARD) {
 		var delta = getDeltaStep(moveStep, camera.rotation.y);
 		camera.position.x -= delta.x * deltaTime;
@@ -324,7 +348,7 @@ var theTime = new Date().getTime();
 	  			TextChica.visible = false;
 	  			TextNight.visible = false;
 	  		}
-	  		
+
 	  	}
 	  	if(camera.position.x >= 380 && camera.position.x <= 580){ // && camera.position.z >= -598 && camera.position.z <= -560){
 	  		if(camera.position.z <= -590){
@@ -429,8 +453,8 @@ var theTime = new Date().getTime();
 
 	  }
 
-	  
-	  
+
+
 	  renderer.render(scene, camera);
 		if(stats) {
 			stats.update();
@@ -482,7 +506,7 @@ document.addEventListener("mousemove", function(e){
 			  e.mozMovementY      ||
 			  e.webkitMovementY   ||
 			  0;
-			
+
 			camera.rotation.y -= movementX / 1000; // horisontal
 			//console.log(camera.rotation.y);
 	}
