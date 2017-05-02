@@ -186,8 +186,17 @@ var ceiling = createBox(0, 200, 0, 2000, 10, 2000, 0, "images/pastel.jpg", 5, 5)
 scene.add(ceiling);
 
 //Imagenes principales
+loader.load('exports/pic4.obj', 'exports/pic4.mtl', function( object ) {
+  object.position.y = -0;
+  object.position.x = -900;
+  object.position.z = 0;
+  object.scale.set(30, 30, 30);
+  object.rotation.x += 91.11;
+  object.rotation.z -= 20.5;
+  scene.add( object );
+});
+
 var remb = createBox(-500, 0, -989, 320, 240, 1, 0, "images/remb.png");
-scene.add(remb);
 
 var TextRemb = createBox(-500, -140, -989, 100, 20, 1, 0, "images/rembText.png");
 scene.add(TextRemb);
@@ -200,8 +209,17 @@ var TextBirth = createBox(500, -140, -989, 100, 20, 1, 0, "images/birthText.png"
 scene.add(TextBirth);
 TextBirth.visible = false;
 
-var mona = createBox(0, 0, -989, 220, 240, 1, 0, "images/mona.png");
-scene.add(mona);
+loader.load('exports/pic1.obj', 'exports/pic1.mtl', function( object ) {
+  object.position.y = 0;
+  object.position.x = 0;
+  object.position.z = -989;
+  object.scale.set(30, 30, 30);
+  object.rotation.x += 91.11;
+  object.rotation.y += 95.8;
+  object.rotation.z -= 20.42;
+  scene.add( object );
+});
+
 									//w   /h
 var Textmona = createBox(0, -140, -989, 100, 20, 1, 0, "images/monaText.png");
 scene.add(Textmona);
