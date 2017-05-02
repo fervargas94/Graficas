@@ -55,7 +55,6 @@ var VIEW_ANGLE = 45,
 // and a scene
 var renderer = window.WebGLRenderingContext ? new t.WebGLRenderer() : new t.CanvasRenderer();
 var camera = new t.PerspectiveCamera(VIEW_ANGLE,ASPECT,NEAR,FAR);
-
 var scene = new t.Scene();
 
 // add the camera to the scene
@@ -286,6 +285,7 @@ var getDeltaStep = function(step, rotation){
 	delta.z = step * Math.cos(rotation);
 	return delta;
 };
+var isUp = false;
 
 var theTime = new Date().getTime();
 (function animloop(){
@@ -298,6 +298,11 @@ var theTime = new Date().getTime();
 			x: camera.position.x,
 			z: camera.position.z
 		};
+
+		console.log(camera.position.x);
+		console.log(camera.position.y);
+		console.log(camera.position.z);
+
 
 	  if(controls.FORWARD) {
 		var delta = getDeltaStep(moveStep, camera.rotation.y);
@@ -325,7 +330,20 @@ var theTime = new Date().getTime();
 	  if(controls.TURN_RIGHT) {
 		camera.rotation.y -= 0.042 * deltaTime;
 	  }
+	  if(controls.SPACE) {
+	  	if (isUp) {
+			camera = new t.OrthographicCamera( window.innerWidth / - 10, window.innerWidth / 10, window.innerHeight / 6, window.innerHeight / - 6, NEAR, FAR);
+			camera.position.x = 0;
+			camera.position.y = 0;
+		  	isUp = false;
+	  	}
+	  	else {
+	  		camera = new t.PerspectiveCamera(VIEW_ANGLE,ASPECT,NEAR,FAR);
+	  		camera.position.z =300;
+	  		isUp = true;
+	  	}
 
+	  }
 	  //console.log(camera.position)
 
 	  if(camera.position.x > 1000 - wallDistance || camera.position.x < -1000 + wallDistance) {
