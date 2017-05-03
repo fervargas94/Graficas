@@ -252,7 +252,12 @@ var current_position = {
 		                    y: 0,
 		                    z: 0,
 		        		};
-
+var startedCctv = false;
+var needsResetting = false;
+var first = true;
+var right = 0;
+var left = 1;
+var direction = right;
 (function animloop(){
 	  requestAnimFrame(animloop);
 		var time = new Date().getTime();
@@ -263,24 +268,36 @@ var current_position = {
 			x: camera.position.x,
 			z: camera.position.z
 		};
+
 		if (controls.P_KEY){
-			console.log(camera.position);
-			console.log("Rotation: " + camera.rotation.y);
+			if (startedCctv === false ){
+				current_position.x = camera.position.x;
+                current_position.y = camera.rotation.y;
+                current_position.z = camera.position.z;
+                needsResetting = true;
+			} 
+			startedCctv = true;
+			startCctvStatic(needsResetting);
+		}
+		else if (startedCctv = true){
+			startedCctv = false;
+			if (needsResetting) {
+				resetCamera(current_position);
+				needsResetting = false;
+				first = true;
+			}
 		}
 		if (controls.C_KEY){
-			console.log("Toggle cctv");
 			console.log(toggle_cctv);
             if (toggle_cctv === false){
                 current_position.x = camera.position.x;
                 current_position.y = camera.rotation.y;
                 current_position.z = camera.position.z;
                 toggle_cctv = true;
-                console.log("starting cctv");
                 startCctv();
             }
             else{
                 toggle_cctv = false;
-                console.log("reseting camera");
                 resetCamera(current_position);
             }
 		}
@@ -453,18 +470,51 @@ function startCctv(){
     };
     var rotation = camera.rotation.y;
     var offset = 50;
-
     camera.rotation.y = -5.546520000000001;
-    //-1626.0449719765634
-    /*
-	Rotation: -4.578840000000001
-	Rotation: -6.6603600000000025
-    */
     camera.position.z = 599.4387304038657;
-    // -2576.592456118329
     camera.position.x = 599.4407111503423;
-    //{ x: 599.4387304038657, y: 0, z: 599.4407111503423 }
-    //Object { x: 583.5301861583231, y: 0, z: 571.7372991168904 }
+    var time = new Date().getTime();
+	var deltaTime = (time - theTime) / (1000 / 60);
+    theTime = time;
+    rotation = camera.rotation.y;
+    var right = 0;
+    var left = 1;
+    var direction = right;
+    var ct = 0;
+    for (var i = 0; i < 6; i++){
+    	setTimeout(function(){ 
+	       camera.rotation.y -= 0.035 * deltaTime; 
+	    }, 850); 
+    }
+}
+
+function startCctvStatic(){
+    var position = {
+        x: camera.position.x,
+        z: camera.position.z
+    };
+    var rotation = camera.rotation.y;
+    var offset = 50;
+    console.log(first);
+    if (first) {
+    	camera.rotation.y = -5.546520000000001;
+    	first = false;
+    	direction = right;
+    }
+    camera.position.z = 599.4387304038657;
+    camera.position.x = 599.4407111503423;
+    var time = new Date().getTime();
+	var deltaTime = (time - theTime) / (1000 / 60);
+    theTime = time;
+
+    if (direction === right){
+    	camera.rotation.y -= 0.042 * deltaTime;
+    	if (camera.rotation.y <= -6.6603600000000025) direction = left;
+    }
+    else if (direction === left){
+    	camera.rotation.y += 0.042 * deltaTime;
+    	if (camera.rotation.y >= -4.578840000000001) direction = right;
+    }
 }
 
 function resetCamera(position){
