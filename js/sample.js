@@ -332,14 +332,16 @@ var theTime = new Date().getTime();
 	  }
 	  if(controls.SPACE) {
 	  	if (isUp) {
-			camera = new t.OrthographicCamera( window.innerWidth / - 10, window.innerWidth / 10, window.innerHeight / 6, window.innerHeight / - 6, NEAR, FAR);
+	  		camera = new t.OrthographicCamera( window.innerWidth / - 4, window.innerWidth / 4, window.innerHeight / 4, window.innerHeight / - 4, 10, 20000);//near far
 			camera.position.x = 0;
 			camera.position.y = 0;
+			camera.lookAt(scene.position);	
 		  	isUp = false;
 	  	}
 	  	else {
 	  		camera = new t.PerspectiveCamera(VIEW_ANGLE,ASPECT,NEAR,FAR);
 	  		camera.position.z =300;
+			camera.lookAt(scene.position);	
 	  		isUp = true;
 	  	}
 
