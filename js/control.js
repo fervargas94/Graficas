@@ -9,6 +9,9 @@ var controls = new function(){
 	this.TURN_RIGHT = false;
 	this.C_KEY = false;
 	this.P_KEY = false;
+	this.SPACE = false;
+	this.TAB = false;
+
 	
 	var processControls = function(keyCode, isKeyDown){
 		switch (keyCode) {
@@ -37,6 +40,13 @@ var controls = new function(){
 				break;
 			case 80:
 				_controls.P_KEY = isKeyDown ? true :false;
+				break;
+			case 32:
+				_controls.SPACE = isKeyDown ? true : false;
+				break;
+			case 9:
+				_controls.TAB = isKeyDown ? true : false;
+				break;
 		}
 	};
 	
@@ -49,12 +59,20 @@ var controls = new function(){
 		_controls.TURN_RIGHT = false;
 		_controls.C_KEY = false;
 		_controls.P_KEY = false;
+		_controls.SPACE = false;
+		_controls.TAB = false;
 	};
 	
 	touchEvent.on(document, "keydown", function(e){
 		processControls(e.keyCode, true);
 	});
 	
+
+	// touchEvent.on(document, "keypress", function(e) {
+	// 	console.log(e);
+	// 	processControls(e.keyCode, false, true);
+	// });
+
 	touchEvent.on(document, "keyup", function(e){
 		processControls(e.keyCode);
 	});
